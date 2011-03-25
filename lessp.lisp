@@ -6,7 +6,7 @@
 (in-package :lessp)
 
 (defvar *types-order*
-  '(null character number symbol string vector sequence))
+  '(null character number package symbol string vector sequence))
 
 ;;  Order predicate
 
@@ -25,12 +25,19 @@
 (defmethod lessp ((a number) (b number))
   (< a b))
 
+(defmethod lessp ((a package) (b package))
+  (and b
+       (or (null a)
+	   (lessp (package-name a)
+		  (package-name b)))))
+
 (defmethod lessp ((a symbol) (b symbol))
-  (or (and (eq (symbol-package a) (symbol-package b))
-	   (string< (symbol-name a)
-		    (symbol-name b)))
-      (string< (package-name (symbol-package a))
-	       (package-name (symbol-package b)))))
+  (and b
+       (or (and (eq (symbol-package a) (symbol-package b))
+		(string< (symbol-name a)
+			 (symbol-name b)))
+	   (lessp (symbol-package a)
+		  (symbol-package b)))))
 
 (defmethod lessp ((a string) (b string))
   (string< a b))

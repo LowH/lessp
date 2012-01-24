@@ -6,7 +6,7 @@
 (in-package :lessp)
 
 (defvar *types-order*
-  '(null character number package symbol string vector sequence))
+  '(null character number package symbol string vector pathname))
 
 ;;  Order predicate
 
@@ -42,7 +42,12 @@
 (defmethod lessp ((a string) (b string))
   (string< a b))
 
-(defmethod lessp ((a sequence) (b sequence))
+(defmethod lessp ((a cons) (b cons))
+  (cond ((lessp (car a) (car b)) t)
+	((lessp (car b) (car a)) nil)
+	(t (lessp (cdr a) (cdr b)))))
+
+(defmethod lessp ((a vector) (b vector))
   (let ((la (length a))
 	(lb (length b)))
     (dotimes (i (min la lb))
@@ -51,3 +56,11 @@
 	(cond ((lessp ai bi) (return-from lessp t))
 	      ((lessp bi ai) (return-from lessp nil)))))
     (< la lb)))
+
+(defun pathname-string (p)
+  (declare (type pathname p))
+  (with-output-to-string (s)
+    (print-object p s)))
+
+(defmethod lessp ((a pathname) (b pathname))
+  (lessp (pathname-string a) (pathname-string b)))

@@ -1,7 +1,7 @@
 ;;
-;;  lessp  -  Generic order predicate in Common Lisp
+;;  lessp  -  Generic order predicate
 ;;
-;;  Copyright 2011 Thomas de Grivel <billitch@gmail.com>
+;;  Copyright 2011,2012 Thomas de Grivel <billitch@gmail.com>
 ;;
 ;;  Permission to use, copy, modify, and distribute this software for any
 ;;  purpose with or without fee is hereby granted, provided that the above
@@ -25,6 +25,6 @@
   :name "lessp"
   :author "Thomas de Grivel <billitch@gmail.com>"
   :version "0.1"
-  :description "Generic order predicate in Common Lisp"
+  :description "Generic order predicate"
   :components
   ((:file "lessp")))

@@ -23,7 +23,14 @@
 (in-package :lessp)
 
 (defvar *types-order*
-  '(null character number package symbol string vector pathname))
+  (list 'null
+	'character
+	'number
+	'package
+	'symbol
+	'string
+	'vector
+	'pathname))
 
 ;;  Order predicate
 
@@ -38,6 +45,9 @@
 	    (tb (return-from lessp nil))
 	    (ta (return-from lessp t)))))
   (error "Dont know how to compare ~S and ~S" a b))
+
+(defmethod lessp ((a fixnum) (b fixnum))
+  (< a b))
 
 (defmethod lessp ((a number) (b number))
   (< a b))

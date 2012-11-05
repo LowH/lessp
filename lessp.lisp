@@ -18,7 +18,7 @@
 
 (defpackage :lessp
   (:use :cl)
-  (:export #:lessp))
+  (:export #:lessp #:lessp-equal #:equal-from-lessp))
 
 (in-package :lessp)
 
@@ -91,3 +91,25 @@
 
 (defmethod lessp ((a pathname) (b pathname))
   (lessp (pathname-string a) (pathname-string b)))
+
+;;  Equal
+
+(defgeneric lessp-equal (a b))
+
+(defmethod lessp-equal (a b)
+  (not (or (lessp a b)
+	   (lessp b a))))
+
+;;  For derived lessp
+
+(defun equal-from-lessp (lessp)
+  (lambda (a b)
+    (not (or (funcall lessp a b)
+	     (funcall lessp b a)))))
+
+(define-compiler-macro equal-from-lessp (lessp)
+  (typecase lessp
+    ((or function symbol) `(lambda (a b)
+			     (not (or (,lessp a b)
+				      (,lessp b a)))))
+    (t `(equal-from-lessp ,lessp))))

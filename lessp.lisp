@@ -36,15 +36,18 @@
 
 (defgeneric lessp (a b))
 
+(defun princ-lessp (a b)
+  (string< (princ-to-string a) (princ-to-string b)))
+
 (defmethod lessp (a b)
   (dolist (type *types-order*)
     (let ((ta (typep a type))
 	  (tb (typep b type)))
       (cond ((and ta tb)
-	     (error "Dont know how to compare ~S and ~S" a b))
+	     (princ-lessp a b))
 	    (tb (return-from lessp nil))
 	    (ta (return-from lessp t)))))
-  (error "Dont know how to compare ~S and ~S" a b))
+  (princ-lessp a b))
 
 (defmethod lessp ((a fixnum) (b fixnum))
   (< a b))

@@ -49,9 +49,6 @@
             (ta (return-from lessp t)))))
   (princ-lessp a b))
 
-(defmethod lessp ((a fixnum) (b fixnum))
-  (< a b))
-
 (defmethod lessp ((a number) (b number))
   (< a b))
 
